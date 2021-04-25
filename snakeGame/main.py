@@ -10,6 +10,7 @@
 
 from turtle import Turtle, Screen
 import random
+import time
 import functools
 
 RIGHT = 0
@@ -42,6 +43,11 @@ class Block:
     def goto(self, x, y):
         self.m_turtle.goto(x, y)
 
+    def goto_position(self, pos):
+        x_cord = pos[0]
+        y_cord = pos[1]
+        self.m_turtle.goto(x_cord, y_cord)
+
     def forward(self, distance):
         self.m_turtle.forward(distance)
 
@@ -50,6 +56,12 @@ class Block:
 
     def setheading(self, heading):
         self.m_turtle.setheading(heading)
+
+    def get_current_position(self):
+        x = self.m_turtle.xcor()
+        y = self.m_turtle.ycor()
+        pos = (x, y)
+        return pos
 
 
 class Snake:
@@ -72,18 +84,22 @@ class Snake:
             self.new_head_direction = direction
             self.snake[0].new_direction = direction
             self.current_head_direction = direction
+            self.snake[0].setheading(direction)
         elif direction == DOWN and (self.current_head_direction != UP and self.current_head_direction != DOWN):
             self.new_head_direction = direction
             self.snake[0].new_direction = direction
             self.current_head_direction = direction
+            self.snake[0].setheading(direction)
         elif direction == LEFT and (self.current_head_direction != RIGHT and self.current_head_direction != LEFT):
             self.new_head_direction = direction
             self.snake[0].new_direction = direction
             self.current_head_direction = direction
+            self.snake[0].setheading(direction)
         elif direction == RIGHT and (self.current_head_direction != LEFT and self.current_head_direction != RIGHT):
             self.new_head_direction = direction
             self.snake[0].new_direction = direction
             self.current_head_direction = direction
+            self.snake[0].setheading(direction)
 
     def forward(self, step_size):
         previous_block = None
@@ -112,9 +128,19 @@ class Snake:
         game_window.update()
         # self.dump_snake_state()
 
+    def forward_new(self, step_size):
+        print("inside forward_new")
+        for i in reversed(range(1, len(self.snake))):
+            print(i)
+            previous_block_position = self.snake[i-1].get_current_position()
+            self.snake[i].goto_position(previous_block_position)
+        self.snake[0].forward(step_size)
+        game_window.update()
+
     def move_one_step(self):
         print("inside move_one_step")
-        self.forward(20)
+        # self.forward(20)
+        self.forward_new(20)
 
     def dump_snake_state(self):
         print("------\n")
@@ -139,6 +165,10 @@ class Snake:
     def create_food(self):
         x_cord = random.randint(0, 280)
         y_cord = random.randint(0, 280)
+        x_remainder = x_cord % 20
+        y_remainder = y_cord % 20
+        x_cord -= x_remainder
+        y_cord -= y_remainder
         print(f"food coordinates {x_cord,y_cord}")
         food = Block()
         food.goto(x_cord, y_cord)
@@ -167,6 +197,10 @@ def onkey_event_handler(key):
 
 
 my_snake = init_snake()
+# my_snake.forward_new()
+# while True:
+#     time.sleep(0.5)
+#     my_snake.move_one_step()
 
 game_window.onkey(key="w", fun=functools.partial(onkey_event_handler, "w"))
 game_window.onkey(key="s", fun=functools.partial(onkey_event_handler, "s"))
