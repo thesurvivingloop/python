@@ -58,8 +58,8 @@ class Block:
         self.m_turtle.setheading(heading)
 
     def get_current_position(self):
-        x = self.m_turtle.xcor()
-        y = self.m_turtle.ycor()
+        x = round(self.m_turtle.xcor())
+        y = round(self.m_turtle.ycor())
         pos = (x, y)
         return pos
 
@@ -77,6 +77,7 @@ class Snake:
             new_block.goto(x, y)
             x -= 20
             self.snake.append(new_block)
+        self.last_tail_position_before_move = self.snake[-1].get_current_position()
 
     def set_direction(self, direction):
         print(f"Inside set_direction. Direction = {direction}")
@@ -131,7 +132,6 @@ class Snake:
     def forward_new(self, step_size):
         print("inside forward_new")
         for i in reversed(range(1, len(self.snake))):
-            print(i)
             previous_block_position = self.snake[i-1].get_current_position()
             self.snake[i].goto_position(previous_block_position)
         self.snake[0].forward(step_size)
@@ -140,7 +140,15 @@ class Snake:
     def move_one_step(self):
         print("inside move_one_step")
         # self.forward(20)
+        self.last_tail_position_before_move = self.snake[-1].get_current_position()
+        print(f"last_tail_position_before_move = {self.last_tail_position_before_move}")
         self.forward_new(20)
+        print(f"snake_head_position = {self.snake[0].get_current_position()}")
+        print(f"food_position = {self.current_food.get_current_position()}")
+        if self.snake[0].get_current_position() == self.current_food.get_current_position():
+            self.create_food()
+            self.add_one_block()
+            print("food eaten")
 
     def dump_snake_state(self):
         print("------\n")
@@ -158,11 +166,18 @@ class Snake:
         snake_length = len(self.snake)
         last_block = self.snake[snake_length - 1]
         new_block = Block()
+        new_block.goto_position(self.last_tail_position_before_move)
+        self.snake.append(new_block)
         new_block.set_current_direction(last_block.current_direction)
         new_block.set_new_direction(last_block.new_direction)
-        # Todo : Set coordinates for the newest created block.
 
     def create_food(self):
+        if self.current_food is not None:
+            old_food = self.current_food
+            old_food.m_turtle.clear()
+            old_food.m_turtle.hideturtle()
+            del old_food
+            game_window.update()
         x_cord = random.randint(0, 280)
         y_cord = random.randint(0, 280)
         x_remainder = x_cord % 20
@@ -180,6 +195,8 @@ def init_snake():
     game_window.tracer(0)
     snake = Snake(5)
     snake.create_food()
+    print(f"Snake Initialized. Head position = {snake.snake[0].get_current_position()}. "
+          f"Food position = {snake.current_food.get_current_position()}")
     game_window.update()
     return snake
 
