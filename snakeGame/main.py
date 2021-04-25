@@ -9,6 +9,7 @@
 # 8. Maintain a scorecard
 
 from turtle import Turtle, Screen
+import random
 import functools
 
 RIGHT = 0
@@ -56,6 +57,7 @@ class Snake:
         self.snake = []
         self.current_head_direction = 0
         self.new_head_direction = 0
+        self.current_food = None
         x = 0
         y = 0
         for _ in range(initial_length):
@@ -134,17 +136,26 @@ class Snake:
         new_block.set_new_direction(last_block.new_direction)
         # Todo : Set coordinates for the newest created block.
 
+    def create_food(self):
+        x_cord = random.randint(0, 280)
+        y_cord = random.randint(0, 280)
+        print(f"food coordinates {x_cord,y_cord}")
+        food = Block()
+        food.goto(x_cord, y_cord)
+        self.current_food = food
+        game_window.update()
+
 
 def init_snake():
     game_window.tracer(0)
-    snake = Snake(15)
+    snake = Snake(5)
+    snake.create_food()
     game_window.update()
     return snake
 
 
 def onkey_event_handler(key):
     print(f"Inside onkey_event_handle. Key = {key}")
-    old_key = key
     if key == "w":
         my_snake.set_direction(UP)
     elif key == "s":
