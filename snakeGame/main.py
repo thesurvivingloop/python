@@ -26,7 +26,7 @@ game_window.title("Snake!!")
 
 class Block:
     def __init__(self):
-        self.m_turtle = Turtle(shape="square")
+        self.m_turtle = Turtle(shape="circle")
         self.m_turtle.speed("slow")
         self.m_turtle.color("white")
         self.m_turtle.penup()
@@ -214,10 +214,12 @@ def onkey_event_handler(key):
 
 
 my_snake = init_snake()
-# my_snake.forward_new()
 # while True:
-#     time.sleep(0.5)
+#     time.sleep(0.1)
 #     my_snake.move_one_step()
+#     my_snake.move_one_step()
+#     my_snake.move_one_step()
+#     my_snake.snake[0].m_turtle.left(90)
 
 game_window.onkey(key="w", fun=functools.partial(onkey_event_handler, "w"))
 game_window.onkey(key="s", fun=functools.partial(onkey_event_handler, "s"))
