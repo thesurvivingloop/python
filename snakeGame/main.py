@@ -26,36 +26,77 @@ def init_snake():
 
 def onkey_event_handler(key):
     print(f"Inside onkey_event_handle. Key = {key}")
-    if key == "w":
+    if key == UP_KEY:
         my_snake.set_direction(UP)
-    elif key == "s":
+    elif key == DOWN_KEY:
         my_snake.set_direction(DOWN)
-    elif key == "a":
+    elif key == LEFT_KEY:
         my_snake.set_direction(LEFT)
-    elif key == "d":
+    elif key == RIGHT_KEY:
         my_snake.set_direction(RIGHT)
     elif key == "space":
         my_snake.move_one_step()
         game_window.update()
 
 
+def onkey_up():
+    print("Up")
+    my_snake.set_direction(UP)
+
+
+def onkey_down():
+    print("Down")
+    my_snake.set_direction(DOWN)
+
+
+def onkey_left():
+    print("Left")
+    my_snake.set_direction(LEFT)
+
+
+def onkey_right():
+    print("Right")
+    my_snake.set_direction(RIGHT)
+
+
+def onkey_space():
+    my_snake.move_one_step()
+    game_window.update()
+
+
+UP_KEY = "Up"
+DOWN_KEY = "Down"
+RIGHT_KEY = "Right"
+LEFT_KEY = "Left"
+
 game_window = Screen()
 game_window.setup(width=600, height=600)
 game_window.bgcolor("black")
 game_window.title("Snake!!")
 my_snake = init_snake()
-# while True:
-#     time.sleep(0.1)
-#     my_snake.move_one_step()
-#     my_snake.move_one_step()
-#     my_snake.move_one_step()
-#     my_snake.snake[0].m_turtle.left(90)
 
-game_window.onkey(key="w", fun=functools.partial(onkey_event_handler, "w"))
-game_window.onkey(key="s", fun=functools.partial(onkey_event_handler, "s"))
-game_window.onkey(key="a", fun=functools.partial(onkey_event_handler, "a"))
-game_window.onkey(key="d", fun=functools.partial(onkey_event_handler, "d"))
-game_window.onkey(key="space", fun=functools.partial(onkey_event_handler, "space"))
+# game_window.onkey(key=UP_KEY, fun=functools.partial(onkey_event_handler, UP_KEY))
+# game_window.onkey(key=DOWN_KEY, fun=functools.partial(onkey_event_handler, DOWN_KEY))
+# game_window.onkey(key=LEFT_KEY, fun=functools.partial(onkey_event_handler, LEFT_KEY))
+# game_window.onkey(key=RIGHT_KEY, fun=functools.partial(onkey_event_handler, RIGHT_KEY))
+# game_window.onkey(key="space", fun=functools.partial(onkey_event_handler, "space"))
 
 game_window.listen()
+game_window.onkey(key=UP_KEY, fun=onkey_up)
+game_window.onkey(key=DOWN_KEY, fun=onkey_down)
+game_window.onkey(key=RIGHT_KEY, fun=onkey_right)
+game_window.onkey(key=LEFT_KEY, fun=onkey_left)
+game_window.onkey(key="space", fun=onkey_space)
+
+while True:
+    time.sleep(0.1)
+    my_snake.move_one_step()
+    game_window.update()
+
 game_window.exitonclick()
+
+
+
+
+
+
