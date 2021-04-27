@@ -1,4 +1,5 @@
 from block import Block
+from food import Food
 import random
 
 RIGHT = 0
@@ -81,15 +82,18 @@ class Snake:
     def move_one_step(self):
         print("inside move_one_step")
         # self.forward(20)
+        ate_food = False
         self.last_tail_position_before_move = self.snake[-1].get_current_position()
         print(f"last_tail_position_before_move = {self.last_tail_position_before_move}")
         self.forward_new(20)
         print(f"snake_head_position = {self.snake[0].get_current_position()}")
-        print(f"food_position = {self.current_food.get_current_position()}")
-        if self.snake[0].get_current_position() == self.current_food.get_current_position():
+        print(f"food_position = {self.current_food.pos()}")
+        if self.snake[0].get_current_position() == self.current_food.pos():
+            ate_food = True
             self.create_food()
             self.add_one_block()
             print("food eaten")
+        return ate_food
 
     def dump_snake_state(self):
         print("------\n")
@@ -115,16 +119,9 @@ class Snake:
     def create_food(self):
         if self.current_food is not None:
             old_food = self.current_food
-            old_food.m_turtle.clear()
-            old_food.m_turtle.hideturtle()
+            old_food.clear()
+            old_food.hideturtle()
             del old_food
-        x_cord = random.randint(0, 280)
-        y_cord = random.randint(0, 280)
-        x_remainder = x_cord % 20
-        y_remainder = y_cord % 20
-        x_cord -= x_remainder
-        y_cord -= y_remainder
-        print(f"food coordinates {x_cord,y_cord}")
-        food = Block()
-        food.goto(x_cord, y_cord)
+        food = Food()
+        print(f"food coordinates = {food.pos()}")
         self.current_food = food
