@@ -35,6 +35,15 @@ class Ball(Turtle):
             self.x_direction *= -1
         return paddle_collision
 
+    def detect_paddle_miss(self):
+        paddle = None
+        if self.xcor() >= 400:
+            paddle = "Right"
+        elif self.xcor() <= -400:
+            paddle = "Left"
+        return paddle
+
+
 
 
 
