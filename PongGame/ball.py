@@ -19,52 +19,22 @@ class Ball(Turtle):
         self.goto((self.xcor() + (10 * self.x_direction), self.ycor() + (10 * self.y_direction)))
 
     def detect_wall_collision(self):
-        collision_detected = False
+        wall_collision = False
         ball_y_cor = self.ycor()
-        ball_x_cor = self.xcor()
-        if ball_y_cor >= 280:
-            print("collided with upper wall")
-            collision_detected = True
-            if ball_x_cor > self.last_x_cor:
-                print("ball is traveling up and right")
-                self.y_direction *= -1
-            else:
-                print("ball is traveling up and left")
-                self.y_direction *= -1
-        elif ball_y_cor <= -280:
-            print("collided with lower wall")
-            collision_detected = True
-            if ball_x_cor > self.last_x_cor:
-                print("ball is traveling down and right")
-                self.y_direction = 1
-            else:
-                print("ball is traveling left and down")
-                self.y_direction = 1
-        return collision_detected
+        if ball_y_cor >= 280 or ball_y_cor <= -280:
+            print("collided with wall")
+            wall_collision = True
+            self.y_direction *= -1
+        return wall_collision
 
     def detect_collision_with_paddles(self, left_paddle, right_paddle):
         paddle_collision = False
-        ball_xcor = self.xcor()
-        ball_ycor = self.ycor()
-        if self.distance(left_paddle) < 40:
+        if self.distance(left_paddle) < 40 or self.distance(right_paddle) < 40:
             paddle_collision = True
-            print("collided with left paddle")
-            if ball_ycor > self.last_y_cor:
-                print("moving up and left")
-                self.x_direction *= -1
-            else:
-                print("moving down and left")
-                self.x_direction *= -1
-        elif self.distance(right_paddle) < 40:
-            paddle_collision = True
-            print("collided with right paddle")
-            if ball_ycor > self.last_y_cor:
-                print("moving up and right")
-                self.x_direction *= -1
-            else:
-                print("moving down and right")
-                self.x_direction *= -1
+            print("collided with paddle")
+            self.x_direction *= -1
         return paddle_collision
+
 
 
 
