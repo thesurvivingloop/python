@@ -2,7 +2,7 @@ from turtle import Turtle
 
 MOVE = False
 ALIGNMENT = "Center"
-FONT = "Courier"
+FONT = ("Courier", 20, "normal")
 
 
 class ScoreBoard(Turtle):

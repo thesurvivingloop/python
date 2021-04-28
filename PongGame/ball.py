@@ -16,7 +16,7 @@ class Ball(Turtle):
     def move(self):
         self.last_x_cor = self.xcor()
         self.last_y_cor = self.ycor()
-        self.goto((self.xcor() + (10 * self.x_direction), self.ycor() + (10 * self.y_direction)))
+        self.goto((self.xcor() + (15 * self.x_direction), self.ycor() + (15 * self.y_direction)))
 
     def detect_wall_collision(self):
         wall_collision = False
@@ -29,7 +29,8 @@ class Ball(Turtle):
 
     def detect_collision_with_paddles(self, left_paddle, right_paddle):
         paddle_collision = False
-        if self.distance(left_paddle) < 40 or self.distance(right_paddle) < 40:
+        if (self.distance(left_paddle) < 50 and self.xcor() < -320) or \
+                (self.distance(right_paddle) < 50 and self.xcor() > 320):
             paddle_collision = True
             print("collided with paddle")
             self.x_direction *= -1
@@ -42,9 +43,4 @@ class Ball(Turtle):
         elif self.xcor() <= -400:
             paddle = "Left"
         return paddle
-
-
-
-
-
 

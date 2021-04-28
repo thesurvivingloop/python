@@ -36,7 +36,7 @@ game_is_on = True
 while game_is_on:
     ball.move()
     game_window.update()
-    time.sleep(0.05)
+    time.sleep(0.1)
     if ball.detect_wall_collision():
         pass
     if ball.detect_collision_with_paddles(left_paddle=l_paddle, right_paddle=r_paddle):
